@@ -9,7 +9,7 @@ const addNewList = function () {
   const li = document.createElement(`li`);
   const text = nameInput.value;
   li.innerHTML = text;
-  li.classList.add(`list-item`);
+  li.classList.add(`list-group-item`);
   nameList.appendChild(li);
 };
 nameInput.addEventListener(`keyup`, function (e) {
@@ -17,34 +17,50 @@ nameInput.addEventListener(`keyup`, function (e) {
     addNewList();
     nameInput.value = ``;
   }
+  const test = document.querySelector(`.testlist`);
 });
 btnAdd.addEventListener(`click`, function () {
   addNewList();
   nameInput.value = ``;
 });
+const teamRow = document.querySelector(`#team-row`);
 const teamNumber = document.getElementById(`team-number`);
 const btnCreate = document.querySelector(`.btn-create`);
 btnCreate.addEventListener(`click`, function () {
   for (let i = 0; i < +teamNumber.value; i++) {
-    const div = document.createElement(`div`);
-    div.classList.add(`col-4`);
-    div.classList.add(`team${i}`);
-    div.innerText = `Team ${i + 1} `;
-    row.appendChild(div);
+    teamRow.innerHTML += `
+    <div class="col-3 team">
+    <h4>TEAM ${i + 1}</h4>
+      <ul class="list-group testlist">
+         
+      </ul>
+  </div>`;
   }
   // teamNumber.value = ` `;
 });
 const addNewTeam = function () {
   const randTeam = Math.floor(Math.random() * +teamNumber.value);
-  console.log(randTeam);
+  // console.log(randTeam);
   const test = document.querySelector(`.testlist`);
-  console.log(test.children.length);
+  // console.log(test.children.length);
   const randon = Math.floor(Math.random() * test.children.length);
-  console.log(randon);
+  // console.log(randon);
   const person = test.children[randon];
-  console.log(person);
-  const team = document.querySelector(`.team${randTeam}`);
-  console.log(team);
-  team.appendChild(person);
+  if (!person) return;
+  // console.log(person);
+  const team = document.querySelectorAll(`.team > ul`);
+  // console.log(team);
+  team[randTeam].appendChild(person);
+  document.querySelector(
+    `.name-box > p`
+  ).textContent = `WAITING LIST (${test.children.length})`;
 };
 btnAssign.addEventListener(`click`, addNewTeam);
+const reset = document.querySelector(`.btn-reset`);
+
+const resetAll = function () {
+  teamRow.innerHTML = ``;
+  nameList.innerHTML = ``;
+  teamNumber.value = ` `;
+};
+reset.addEventListener(`click`, resetAll);
